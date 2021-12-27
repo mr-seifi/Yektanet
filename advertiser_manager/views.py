@@ -11,6 +11,7 @@ def index(request):
             ad.views += 1
             ad.advertiser.views += 1
             ad.save()
+            ad.advertiser.save()
     context = {'advertisers': advertiser_list}
     return render(request, 'advertiser_manager/index.html', context)
 

@@ -9,6 +9,7 @@ def index(request):
     for adv in advertiser_list:
         for ad in adv.ad_set.all():
             ad.views += 1
+            ad.advertiser.views += 1
             ad.save()
     context = {'advertisers': advertiser_list}
     return render(request, 'advertiser_manager/index.html', context)

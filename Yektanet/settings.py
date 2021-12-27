@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'advertiser_system.apps.AdvertiserManagerConfig'
+    'advertiser_manager.apps.AdvertiserManagerConfig'
 ]
 
 MIDDLEWARE = [

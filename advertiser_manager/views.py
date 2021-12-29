@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
 from .models import Advertiser, Ad
 from django.views.generic import RedirectView, ListView, TemplateView
 
@@ -35,11 +36,11 @@ class CreatedView(RedirectView):
 
     def post(self, request, *args, **kwargs):
         ad = Ad()
-        ad.title = request.POST.get('title', False)
-        ad.img_url = request.POST.get('img_url', False)
-        ad.link = request.POST.get('link', False)
-        ad.advertiser = get_object_or_404(Advertiser, pk=int(request.POST.get('adv_id', False)))
-        ad.pub_date = request.POST.get('date', False)
+        ad.title = request.POST.get('title', 'defaultTitle')
+        ad.img_url = request.POST.get('img_url', 'defaultImgUrl')
+        ad.link = request.POST.get('link', 'https://google.com')
+        ad.advertiser = get_object_or_404(Advertiser, pk=int(request.POST.get('adv_id')))
+        ad.pub_date = request.POST.get('date', timezone.now())
         ad.save()
         return super(CreatedView, self).post(request, *args, **kwargs)
 

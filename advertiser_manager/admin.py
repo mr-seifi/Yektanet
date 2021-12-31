@@ -1,5 +1,26 @@
 from django.contrib import admin
-from .models import Advertiser, Ad
+from .models import Advertiser, Ad, View, Click
 
-admin.site.register(Advertiser)
-admin.site.register(Ad)
+
+class AdvertiserAdmin(admin.ModelAdmin):
+    list_display = ('name', 'reg_date')
+
+
+class AdAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'pub_date')
+    list_filter = ('approve', 'pub_date')
+    search_fields = ('title',)
+
+
+class ViewAdmin(admin.ModelAdmin):
+    list_display = ('ad_id', 'viewed_time', 'user_ip')
+
+
+class ClickAdmin(admin.ModelAdmin):
+    list_display = ('ad_id', 'clicked_time', 'user_ip')
+
+
+admin.site.register(Advertiser, AdvertiserAdmin)
+admin.site.register(Ad, AdAdmin)
+admin.site.register(View, ViewAdmin)
+admin.site.register(Click, ClickAdmin)

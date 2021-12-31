@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
-from .models import Advertiser, Ad
+from .models import Advertiser, Ad, View, Click
 from django.views.generic import RedirectView, ListView, TemplateView
 
 
@@ -12,17 +12,7 @@ class IndexView(ListView):
     context_object_name = 'advertisers'
 
     def get(self, request, *args, **kwargs):
-        IndexView.increaseViews()
         return super(IndexView, self).get(request, *args, **kwargs)
-
-    @staticmethod
-    def increaseViews():
-        for adv in Advertiser.objects.all():
-            for ad in adv.ad_set.all():
-                ad.views += 1
-                ad.advertiser.views += 1
-                ad.save()
-                ad.advertiser.save()
 
 
 class CreateView(TemplateView):
@@ -56,16 +46,8 @@ class ClickRedirectView(RedirectView):
         match generating the redirect request are provided as kwargs to this
         method.
         """
-
         return get_object_or_404(Ad, pk=kwargs['ad_id']).link
 
     def get(self, request, *args, **kwargs):
-        ad = get_object_or_404(Ad, pk=kwargs['ad_id'])
-        ad.clicks += 1
-        ad.advertiser.clicks += 1
-        ad.advertiser.save()
-        ad.save()
         return super(ClickRedirectView, self).get(request, *args, **kwargs)
-
-
 

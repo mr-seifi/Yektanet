@@ -16,7 +16,7 @@
 		    {% for ad in advertiser.ad_set.all %}
                 {% if ad.approve %}
                     <div class="card col-md-2 p-0 mx-2">
-                        <a href="{% url 'advertiser_manager:click' ad.id %}">
+                        <a href="{% url 'advertiser_manager:click' ad.view_set.last.id %}">
                             <img src="{{ ad.img_url }}"
                                  class="card-img-top">
                             <div class="card-body">

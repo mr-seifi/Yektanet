@@ -25,7 +25,7 @@ class StatMiddleware:
             if not ad.approve:
                 continue
             v = View()
-            v.ad_id = ad
+            v.ad = ad
             v.viewed_time = timezone.now()
             v.user_ip = request.META['REMOTE_ADDR']
             v.save()
@@ -33,7 +33,7 @@ class StatMiddleware:
     @staticmethod
     def clickInc(request):
         c = Click()
-        c.ad_id = Ad.objects.get(pk=re.findall(r'\/advertiser\/click\/(\d+)', request.path)[0])
+        c.view = View.objects.get(pk=re.findall(r'\/advertiser\/click\/(\d+)', request.path)[0])
         c.clicked_time = timezone.now()
         c.user_ip = request.META['REMOTE_ADDR']
         c.save()

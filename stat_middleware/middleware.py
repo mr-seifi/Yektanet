@@ -21,9 +21,7 @@ class StatMiddleware:
 
     @staticmethod
     def viewInc(request):
-        for ad in Ad.objects.all():
-            if not ad.approve:
-                continue
+        for ad in Ad.objects.filter(approve=True):
             v = View()
             v.ad = ad
             v.viewed_time = timezone.now()

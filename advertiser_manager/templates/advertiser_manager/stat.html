@@ -8,14 +8,24 @@
   <h3>Clicked Sum</h3>
     {% for item in clicked_sum %}
     <ul>
-        <strong>Date: </strong> {{ item.hour }} -- <strong>Clicked: </strong>{{ item.c }}
+        <strong>Date: </strong> {{ item.hour }} -- <strong>Clicked:</strong> {{ item.c }}
     </ul>
     {% endfor %}
   <h3>Viewed Sum</h3>
     {% for item in viewed_sum %}
     <ul>
-        <strong>Date: </strong> {{ item.hour }} -- <strong>Viewed: </strong>{{ item.c }}
+        <strong>Date: </strong> {{ item.hour }} -- <strong>Viewed:</strong> {{ item.c }}
     </ul>
     {% endfor %}
+  <h3>Click/View Rate</h3>
+    {% for ad, rate in rate_data %}
+    <ul>
+        <strong>Ad: </strong> {{ ad }} -- <strong>Rate: </strong> {{ rate }}
+    </ul>
+    {% endfor %}
+  <h3>Average different between clicked and viewed times</h3>
+    <ul>
+        <strong>{{ avg_diff_click_view }}</strong>
+    </ul>
 </body>
 </html>

@@ -32,7 +32,6 @@ class StatMiddleware:
     def clickInc(request, args, kwargs):
         c = Click()
         c.view = View.objects.get(pk=kwargs['view_id'])
-        print('args: ', args, 'kwargs: ', kwargs)
         c.clicked_time = timezone.now()
         c.user_ip = request.META['REMOTE_ADDR']
         c.save()

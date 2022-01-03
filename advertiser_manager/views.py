@@ -4,6 +4,8 @@ from django.urls import reverse
 from django.utils import timezone
 from .models import Advertiser, Ad, View, Click
 from django.views.generic import RedirectView, ListView, TemplateView
+from django.db.models.functions import TruncHour
+from django.db.models import Count
 
 
 class IndexView(ListView):
@@ -46,8 +48,15 @@ class ClickRedirectView(RedirectView):
         match generating the redirect request are provided as kwargs to this
         method.
         """
-        return get_object_or_404(Ad, pk=kwargs['ad_id']).link
+        return get_object_or_404(View, pk=kwargs['view_id']).ad.link
 
     def get(self, request, *args, **kwargs):
         return super(ClickRedirectView, self).get(request, *args, **kwargs)
 
+
+class StatView(TemplateView):
+    template_name = 'advertiser_manager/stat.html'
+    extra_context = {'clicked_sum': Click.objects.annotate(hour=TruncHour('clicked_time')).values('hour').annotate(c=Count('id')).values('hour', 'c'),
+                     'viewed_sum': View.objects.annotate(hour=TruncHour('viewed_time')).values('hour').annotate(c=Count('id')).values('hour', 'c'),
+                     'whole_clicks': Click.objects.count(),
+                     'whole_views': View.objects.count()}

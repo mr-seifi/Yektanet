@@ -1,11 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from .models import Advertiser, Ad, View, Click
 from django.views.generic import RedirectView, ListView, TemplateView
 from django.db.models.functions import TruncHour
-from django.db.models import Count
+from django.db.models import Count, Avg, F
 
 
 class IndexView(ListView):
@@ -56,7 +54,21 @@ class ClickRedirectView(RedirectView):
 
 class StatView(TemplateView):
     template_name = 'advertiser_manager/stat.html'
-    extra_context = {'clicked_sum': Click.objects.annotate(hour=TruncHour('clicked_time')).values('hour').annotate(c=Count('id')).values('hour', 'c'),
-                     'viewed_sum': View.objects.annotate(hour=TruncHour('viewed_time')).values('hour').annotate(c=Count('id')).values('hour', 'c'),
-                     'whole_clicks': Click.objects.count(),
-                     'whole_views': View.objects.count()}
+
+    def get_context_data(self, **kwargs):
+        data = []
+        for ad in Ad.objects.order_by('-pub_date'):
+            clicked = 0
+            for view in ad.view_set.all():
+                clicked += view.click_set.count()
+            data.append((ad, clicked / ad.view_set.count()))
+        context = {
+            'clicked_sum': Click.objects.annotate(hour=TruncHour('clicked_time')).values('hour').annotate(
+                c=Count('id')).values('hour', 'c'),
+            'viewed_sum': View.objects.annotate(hour=TruncHour('viewed_time')).values('hour').annotate(
+                c=Count('id')).values('hour', 'c'),
+            'rate_data': data,
+            'avg_diff_click_view': Click.objects.annotate(diff=F('clicked_time') - F('view__viewed_time')).aggregate(Avg('diff'))['diff__avg']
+                }
+        kwargs.update(context)
+        return super(StatView, self).get_context_data(**kwargs)

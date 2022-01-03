@@ -13,11 +13,11 @@ class AdAdmin(admin.ModelAdmin):
 
 
 class ViewAdmin(admin.ModelAdmin):
-    list_display = ('ad_id', 'viewed_time', 'user_ip')
+    list_display = ('ad', 'viewed_time', 'user_ip')
 
 
 class ClickAdmin(admin.ModelAdmin):
-    list_display = ('ad_id', 'clicked_time', 'user_ip')
+    list_display = ('view', 'clicked_time', 'user_ip')
 
 
 admin.site.register(Advertiser, AdvertiserAdmin)

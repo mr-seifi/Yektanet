@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <h3>Clicked Sum</h3>
+    {% for item in clicked_sum %}
+    <ul>
+        <strong>Date: </strong> {{ item.hour }} -- <strong>Clicked: </strong>{{ item.c }}
+    </ul>
+    {% endfor %}
+  <h3>Viewed Sum</h3>
+    {% for item in viewed_sum %}
+    <ul>
+        <strong>Date: </strong> {{ item.hour }} -- <strong>Viewed: </strong>{{ item.c }}
+    </ul>
+    {% endfor %}
+</body>
+</html>

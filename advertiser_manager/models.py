@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import get_object_or_404
 
 
 class Advertiser(models.Model):
@@ -22,12 +23,12 @@ class Ad(models.Model):
 
 
 class View(models.Model):
-    ad_id = models.ForeignKey(Ad, on_delete=models.CASCADE)
+    ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
     viewed_time = models.DateTimeField('date viewed')
     user_ip = models.CharField(max_length=30)
 
 
 class Click(models.Model):
-    ad_id = models.ForeignKey(Ad, on_delete=models.CASCADE)
     clicked_time = models.DateTimeField('date clicked')
     user_ip = models.CharField(max_length=30)
+    view = models.ForeignKey(View, on_delete=models.CASCADE)

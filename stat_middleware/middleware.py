@@ -17,7 +17,7 @@ class StatMiddleware:
         if request.path == '/advertiser/':
             self.viewInc(request)
         if '/advertiser/click' in request.path:
-            self.clickInc(request)
+            self.clickInc(request, view_args, view_kwargs)
 
     @staticmethod
     def viewInc(request):
@@ -31,9 +31,10 @@ class StatMiddleware:
             v.save()
 
     @staticmethod
-    def clickInc(request):
+    def clickInc(request, args, kwargs):
         c = Click()
-        c.view = View.objects.get(pk=re.findall(r'\/advertiser\/click\/(\d+)', request.path)[0])
+        c.view = View.objects.get(pk=kwargs['view_id'])
+        print('args: ', args, 'kwargs: ', kwargs)
         c.clicked_time = timezone.now()
         c.user_ip = request.META['REMOTE_ADDR']
         c.save()

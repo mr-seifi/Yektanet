@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Advertiser, Ad, View, Click
+from advertiser_manager.models import Advertiser, Ad, View, Click
 
 
 class AdvertiserSerializer(serializers.ModelSerializer):

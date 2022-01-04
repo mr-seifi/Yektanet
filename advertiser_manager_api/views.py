@@ -3,6 +3,7 @@ from advertiser_manager_api.serializers import AdvertiserSerializer, AdSerialize
 from django.shortcuts import get_object_or_404
 from rest_framework import mixins
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
 
 
 class AdvertiserList(generics.GenericAPIView,
@@ -10,6 +11,7 @@ class AdvertiserList(generics.GenericAPIView,
                      mixins.CreateModelMixin):
     queryset = Advertiser.objects.all()
     serializer_class = AdvertiserSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -24,6 +26,7 @@ class AdvertiserDetail(generics.GenericAPIView,
                        mixins.DestroyModelMixin):
     queryset = Advertiser.objects.all()
     serializer_class = AdvertiserSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)

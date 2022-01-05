@@ -1,3 +1,13 @@
 from django.db import models
 
-# Create your models here.
+
+class ClickedCount(models.Model):
+
+    date = models.DateTimeField()
+    count = models.IntegerField()
+
+
+class ViewedCount(models.Model):
+
+    date = models.DateTimeField()
+    count = models.IntegerField()

@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'advertiser_manager.apps.AdvertiserManagerConfig',
     'stat_middleware.apps.StatMiddlewareConfig',
+    'periodic_tasks.apps.PeriodicTasksConfig',
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'django_celery_results',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
